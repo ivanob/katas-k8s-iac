@@ -16,6 +16,13 @@
 
 I will use kubectl as tool to connect to the k8s cluster.
 
+1. Build the infra in AWS for the K8s cluster
+    - `terraform apply` in the /infra folder
+2. Build and push the docker images of the services
+    - `make push-all`
+3. Deploy the K8s namespace
+    - `make deploy`
+
 # Instructions
 
 This kata will use the tool Makefile to build and push the docker images to the repository (ECR). Also to deploy the workload.
