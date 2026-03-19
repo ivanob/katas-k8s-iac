@@ -3,6 +3,7 @@
 
 - minikube cluster, with gateway and couple of services, with opentelemetry implemented (integrations with datadog, new relic...)
 - Stateful set with AWS volume storage
+[ ] Cluster with keycloak and hashicorp vault
 
 
 # Bibliography
