@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: service-a
-        image: your-registry/service-a:latest
+        image: ${ECR_REGISTRY}/service-a:latest
         ports:
         - containerPort: 8080
 
@@ -65,7 +65,7 @@ spec:
     spec:
       containers:
       - name: service-b
-        image: your-registry/service-b:latest
+        image: ${ECR_REGISTRY}/service-b:latest
         ports:
         - containerPort: 8080
 
@@ -83,3 +83,72 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 8080
+
+---
+# PersistentVolumeClaim for PostgreSQL data
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: kata1
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+# PostgreSQL Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: kata1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "kata_db"
+        - name: POSTGRES_USER
+          value: "kata_user"
+        - name: POSTGRES_PASSWORD
+          value: "kata_password"  # TODO: Use Secret instead in production
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+          subPath: postgres
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+
+---
+# PostgreSQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: kata1
+spec:
+  type: ClusterIP
+  selector:
+    app: postgres
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+

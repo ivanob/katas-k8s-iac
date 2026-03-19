@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: service-b
+
+server:
+  port: 8080
+

@@ -11,10 +11,25 @@
     - Has a database attached that persists and stores number of requests received
 - All deployed with the same deployment.yml using the K8s approach. 
 - Nothing created with terraform, AWS is just the cloud to deploy. No usage of AWS services besides EKS.
+- I will add traceID with any known framework. In both microservices. The metrics service will store requests per session and in global. Session is, lets say, received in the last 5 min.
+
+# Config
+Add a .env file with this info:
+```
+ECR_REGISTRY="path-to-your-ecr-registry"
+```
+
+Before pulling or pushing images to ECR, if you are using AWS then you need to login with your credentials. Check that you have your `access_key_id` and `secret_access_key` in ~/.aws/credentials and if you do a `echo $AWS_PROFILE` it displays your user. Then do in command line:
+```
+aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin HERE_THE_ECR_URL
+
+ECR_URL=XXXXXXXX.dkr.ecr.eu-west-1.amazonaws.com
+```
 
 # Steps
 
 I will use kubectl as tool to connect to the k8s cluster.
+To execute the following commands I use the tool Makefile
 
 1. Build the infra in AWS for the K8s cluster
     - `terraform apply` in the /infra folder
