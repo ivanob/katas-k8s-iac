@@ -1,7 +1,7 @@
 resource "aws_eks_cluster" "main" {
   name            = "kata1-cluster"
   role_arn        = aws_iam_role.eks_cluster.arn
-  version         = "1.30"
+  version         = "1.34"
 
   vpc_config {
     subnet_ids = [

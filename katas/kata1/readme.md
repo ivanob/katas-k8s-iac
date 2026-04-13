@@ -12,6 +12,15 @@
 - All deployed with the same deployment.yml using the K8s approach. 
 - Nothing created with terraform, AWS is just the cloud to deploy. No usage of AWS services besides EKS.
 - I will add traceID with any known framework. In both microservices. The metrics service will store requests per session and in global. Session is, lets say, received in the last 5 min.
+- Docker images are stored in ECR in AWS, so I give permissions to pull them:
+
+```
+kubectl create secret docker-registry ecr-secret \
+  --docker-server=REPLACE_BY_IMAGE_URL \
+  --docker-username=AWS \
+  --docker-password=$(aws ecr get-login-password --region eu-west-1) \
+  -n kata1
+```
 
 # Config
 Add a .env file with this info:

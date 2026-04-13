@@ -11,4 +11,19 @@ push-service-b:
 push-all: push-service-a push-service-b
 
 deploy:
-	kubectl apply -f ./k8s/deployment.yml
+	bash -c 'set -a; source ./.env; set +a; envsubst < ./k8s/deployment.yml | kubectl apply -f -'
+
+check-k8s-context:
+	kubectl config current-context
+
+check-k8s-status:
+	kubectl get all -n kata1
+
+aws-login:
+	aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin $(ECR_REGISTRY)
+
+delete-k8s-services:
+	kubectl delete pod -n kata1 -l app=service-b && kubectl delete pod -n kata1 -l app=service-a
+
+expose-service-a:
+	kubectl port-forward -n kata1 svc/service-a 8080:80

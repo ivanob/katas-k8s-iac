@@ -26,6 +26,8 @@ spec:
         image: ${ECR_REGISTRY}/service-a:latest
         ports:
         - containerPort: 8080
+      imagePullSecrets:
+      - name: ecr-secret
 
 ---
 # This is the abstraction of the network. It allows pods to communicate with each other because it provides a stable DNS
@@ -68,6 +70,8 @@ spec:
         image: ${ECR_REGISTRY}/service-b:latest
         ports:
         - containerPort: 8080
+      imagePullSecrets:
+      - name: ecr-secret
 
 ---
 apiVersion: v1
@@ -117,7 +121,8 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: postgres:16
+        image: postgres:16 # This pulls automatically from Docker Hub as it's a public image
+        # I dont have to create a dockerfile for it. I use the official one and k8s knows how to pull it.
         ports:
         - containerPort: 5432
         env:
