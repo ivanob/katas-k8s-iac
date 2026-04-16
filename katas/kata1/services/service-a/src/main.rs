@@ -45,11 +45,30 @@ async fn health_check() -> impl IntoResponse {
 async fn receive_data(Json(payload): Json<DataPayload>) -> impl IntoResponse {
     tracing::info!("Received data: {:?}", payload);
 
-    // TODO: Forward to service-b if needed
-    // TODO: Process data, store in database, etc.
-
-    (
-        StatusCode::CREATED,
-        Json(serde_json::json!({"received": true, "message": payload.message})),
-    )
+    // Forward to service-b
+    let client = reqwest::Client::new();
+    match client
+        .post("http://service-b/api/data")
+        .json(&payload)
+        .send()
+        .await
+    {
+        Ok(resp) => {
+            let status = resp.status();
+            let counter = resp.text().await.unwrap_or_default();
+            tracing::info!("Service-B response: {:?} {:?}", status, counter);
+            (
+                StatusCode::CREATED,
+                Json(serde_json::json!({"received": true, "numOfRequests": counter, "message:": payload.message})),
+            )
+        }
+        Err(e) => {
+            tracing::error!("Failed to reach service-b: {}", e);
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(serde_json::json!({"received": false, "error": e.to_string()})),
+            )
+        }
+    }
+    
 }

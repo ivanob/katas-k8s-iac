@@ -27,6 +27,8 @@ Add a .env file with this info:
 ```
 ECR_REGISTRY="path-to-your-ecr-registry"
 ```
+ECR_REGISTRY=host.docker.internal:5000 // To use the host gateway address that minikube reaches
+ECR_REGISTRY= // This will build the images directly inside minikube (no registry needed)
 
 Before pulling or pushing images to ECR, if you are using AWS then you need to login with your credentials. Check that you have your `access_key_id` and `secret_access_key` in ~/.aws/credentials and if you do a `echo $AWS_PROFILE` it displays your user. Then do in command line:
 ```

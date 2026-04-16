@@ -23,11 +23,10 @@ spec:
     spec:
       containers:
       - name: service-a
-        image: ${ECR_REGISTRY}/service-a:latest
+        image: service-a:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 8080
-      imagePullSecrets:
-      - name: ecr-secret
 
 ---
 # This is the abstraction of the network. It allows pods to communicate with each other because it provides a stable DNS
@@ -67,11 +66,10 @@ spec:
     spec:
       containers:
       - name: service-b
-        image: ${ECR_REGISTRY}/service-b:latest
+        image: service-b:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 8080
-      imagePullSecrets:
-      - name: ecr-secret
 
 ---
 apiVersion: v1

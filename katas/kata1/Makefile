@@ -1,12 +1,10 @@
 include .env
 
 push-service-a:
-	docker build -t $(ECR_REGISTRY)/service-a:latest ./services/service-a
-	docker push $(ECR_REGISTRY)/service-a:latest
+	docker build -t service-a:latest ./services/service-a
 
 push-service-b:
-	docker build -t $(ECR_REGISTRY)/service-b:latest ./services/service-b
-	docker push $(ECR_REGISTRY)/service-b:latest
+	docker build -t service-b:latest ./services/service-b
 
 push-all: push-service-a push-service-b
 
