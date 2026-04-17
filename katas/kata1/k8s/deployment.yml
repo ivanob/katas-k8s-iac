@@ -4,6 +4,28 @@ metadata:
   name: kata1
 
 ---
+# Ingress - Routes external traffic to services
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kata1-ingress
+  namespace: kata1
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: service-a
+            port:
+              number: 80
+
+---
 # This is the abstraction of the microservice A, which is just one container. It will be duplicated to have 2 replicas.
 # It will be exposed to the network through a service, which is the abstraction of the network. 
 apiVersion: apps/v1

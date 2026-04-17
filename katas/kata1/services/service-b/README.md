@@ -37,6 +37,14 @@ docker build -t service-b:latest .
 docker run -p 8080:8080 service-b:latest
 ```
 
+## How to start minikube IP
+
+Step 5: Get Minikube IP and Test
+Get the ingress address:
+`kubectl get ingress -n kata1`
+Start the tunnel (in a separate terminal):
+`minikube tunnel`
+
 ## TODO
 
 - [ ] Store request count in PostgreSQL database

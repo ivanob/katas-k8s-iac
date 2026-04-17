@@ -25,3 +25,18 @@ delete-k8s-services:
 
 expose-service-a:
 	kubectl port-forward -n kata1 svc/service-a 8080:80
+
+start-minikube-tunnel: #creates a network bridge between your local machine and the minikube cluster.
+	minikube tunnel
+
+get-minikube-ip:
+	kubectl get ingress -n kata1
+
+nginx-logs:
+	kubectl logs -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx -f
+
+nginx-status:
+	kubectl get pods -n ingress-nginx && echo "---" && kubectl get ingress -n kata1
+
+ingress-info:
+	kubectl describe ingress -n kata1 kata1-ingress
