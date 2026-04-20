@@ -48,5 +48,5 @@ Start the tunnel (in a separate terminal):
 ## TODO
 
 - [ ] Store request count in PostgreSQL database
-- [ ] Call service-a if needed
+- [X] Call service-a if needed
 - [ ] Add error handling

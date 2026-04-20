@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: keycloak-db
+  namespace: kata2
+spec:
+  serviceName: keycloak-db-service
+  selector:
+    matchLabels:
+      app: keycloak-db
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: keycloak-db
+    spec:
+      containers:
+        - name: keycloak-db
+          image: postgres:15
+          volumeMounts:
+            - mountPath: /data
+              name: cache-volume
+          env:
+            - name: POSTGRES_USER
+              value: testuser
+            - name: POSTGRES_PASSWORD
+              value: testpassword
+            - name: PGDATA
+              value: /data/pgdata
+            - name: POSTGRES_DB
+              value: keycloak
+      volumes:
+        - name: cache-volume
+          persistentVolumeClaim:
+            claimName: pvc-claim-db # Here I claim the volume for my DB
+          
+---
+# PVC (Persistent Volume Claim): This is the claim that my statefulset will use to persist data.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-claim-db
+  namespace: kata2
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+
+---
+# PV (Persistent Volume): Here I declare a storage pool of 3GB that can be used by my services to persist data.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-volume
+spec:
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/app/data"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-db-service # This is the service that will expose my DB to other services in the cluster. It will be used by keycloak to connect to the DB.
+  namespace: kata2
+spec:
+  selector:
+    app: keycloak-db
+  type: ClusterIP
+  ports:
+  - port: 5432
+    targetPort: 5432

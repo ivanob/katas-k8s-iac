@@ -40,3 +40,6 @@ nginx-status:
 
 ingress-info:
 	kubectl describe ingress -n kata1 kata1-ingress
+
+destroy-k8s-cluster:
+	kubectl delete namespace kata1 && minikube delete
