@@ -3,3 +3,46 @@ kind: Deployment
 metadata:
   name: keycloak
   namespace: kata2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:latest # This is the official image of Keycloak
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_ADDR
+          value: "keycloak-db-service"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_USER
+          value: "testuser" 
+        - name: DB_PASSWORD
+          value: "testpassword"
+        - name: DB_NAME
+          value: "keycloak" 
+
+---
+# Keycloack Service exposed for connecting with ingress
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-service
+  namespace: kata2
+spec:
+  type: ClusterIP
+  selector:
+    app: keycloak
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080

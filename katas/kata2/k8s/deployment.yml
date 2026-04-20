@@ -17,10 +17,10 @@ spec:
   - host: localhost
     http:
       paths:
-      - path: /
+      - path: /auth
         pathType: Prefix
         backend:
           service:
-            name: service-a
+            name: keycloak-service
             port:
-              number: 80
+              number: 8080 # This is what the keycloak service is exposing
