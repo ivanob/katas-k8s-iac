@@ -1,0 +1,10 @@
+curl -X POST 'http://127.0.0.1:54434/auth/admin/realms/kata2/users' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJFdVNWcGNSeUdrUVdtMkwydURsc3NWQ2RsTUk1U3NXbGlqOGFvSUY1SGhRIn0.eyJleHAiOjE3NzcwNTI2MDgsImlhdCI6MTc3NzA1MjU0OCwianRpIjoib25sdHJvOjc3YmMwNjNhLTRiMjMtNGYzMC04MDgxLTVjOTU0YmZhYzI0OSIsImlzcyI6Imh0dHA6Ly8xMjcuMC4wLjE6NTQ0MzQvYXV0aC9yZWFsbXMvbWFzdGVyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWRtaW4tY2xpIiwic2lkIjoiVkR6X2RZWFRHZ1VyV2tCR2RtNzRQMFdWIiwic2NvcGUiOiJlbWFpbCBwcm9maWxlIn0.B6PyuT9bLWQI5JAanEYx2zNrsLOse22jp3VbIxAEOwP68Rn9lOO5Qyhh2-aZTrdhOxnlJI0sEixrMrrk5Yd44yCzRU9HCzzxZjjHsM2qhNDRZ6NKBJKNRdnV9vhGTpRS87C4wmlnHdAeIJHQLPBiui52VeTxF47j5jQk1MJzblUzyvfs4NE4rnsmKjTTBRS9ER62tlEkZnz81P-HC-jy_0LFLfUEkPpR1lLw-4j0BSyto_LFBBzBiNvLRudBQ9rljBF3qQGBvJGRV92H3jDTNdfbf2ppY4fnd0CYUohwHrjn4T89XGSifE0t19NYsEO88e-eO2dKhGF-fwMsIBz4Qg' \
+  -d '{
+    "username": "alice",
+    "email": "alice@example.com",
+    "firstName": "Alice",
+    "lastName": "Doe",
+    "enabled": true
+  }'
