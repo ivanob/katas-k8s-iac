@@ -1,7 +1,16 @@
-## Authentication + RabbitMQ
+## Authentication with keycloak
 
 - This kata will integrate NGINX + Keycloak for authentication/authorization of users
-- It will contain a rabbitMQ instance to store messages before it is processed by service.
+- All the deployment would be automated: creation of realms, creation of Client... try to avoid manual config in keycloak
+- It will contain ROLES: Admin, Customer, Operator
+- It will allow social login: Facebook, Google
+- It will be locally deployed in K8s, but lets deploy too to the VPS with K3s
+- It will connect to a database to store users
+- Add some observability tool to manage:
+    - Content of DB
+    - Whatever happened through NGINX
+    - Whatever happened in Keycloak
+- Maybe add a couple of resources in a microservice just to validate JWTs
 
 
 ## Explanation of make check-minikube-status
